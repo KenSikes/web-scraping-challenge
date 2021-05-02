@@ -40,3 +40,20 @@ def scrape_mars_news():
         return mars_info
 
         browser.quit()
+
+# Mars Facts
+def scrape_mars_facts():
+
+    # Visit Mars facts url 
+    mars_facts_url = 'https://galaxyfacts-mars.com/'
+
+    # Use Panda's `read_html` to parse the url
+    mars_facts = pd.read_html(facts_url)
+
+    # Save html code to folder Assets
+    data = mars_df.to_html()
+
+    # Dictionary entry from MARS FACTS
+    mars_info['mars_facts'] = data
+
+    return mars_info
