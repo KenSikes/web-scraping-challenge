@@ -57,3 +57,65 @@ def scrape_mars_facts():
     mars_info['mars_facts'] = data
 
     return mars_info
+
+# Mars Hemisphere
+
+def scrape_mars_hemispheres():
+
+        # Initialize browser 
+        browser = init_browser()
+
+        # Visit hemispheres website through splinter module 
+        hemispheres_url = 'https://marshemispheres.com/'
+        browser.visit(hemispheres_url)
+
+        # HTML Object
+        html_hemispheres = browser.html
+
+        # Parse HTML with Beautiful Soup
+        soup = bs(html_hemispheres, 'html.parser')
+
+        # Retreive all items that contain mars hemispheres information
+        main_url = soup.find_all('div', class_='item')
+
+        # Create empty list for hemisphere urls 
+        hem_url = []
+
+        # Store the main_url 
+        hemispheres_main_url = 'https://marshemispheres.com/'
+
+        # Loop through the items previously stored
+        for x in main_url: 
+            # Store title
+            title = i.find('h3').text
+            
+            # Store link that leads to full image website
+            partial_img_url = i.find('a', class_='itemLink product-item')['href']
+            
+            # Visit the link that contains the full image website 
+            browser.visit(hemispheres_main_url + partial_img_url)
+            
+            # HTML Object of individual hemisphere information website 
+            partial_img_html = browser.html
+            
+            # Parse HTML with Beautiful Soup for every individual hemisphere information website 
+            soup = bs( partial_img_html, 'html.parser')
+            
+            # Retrieve full image source 
+            img_url = hemispheres_main_url + soup.find('img', class_='wide-image')['src']
+            
+            # Append the retreived information into a list of dictionaries 
+            hem_url.append({"title" : title, "img_url" : img_url})
+
+        mars_info['hem_url'] = hem_url
+        
+
+        # Return mars_data dictionary 
+
+        return mars_info
+
+        browser.quit()
+
+
+
+
